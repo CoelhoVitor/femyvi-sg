@@ -12,10 +12,15 @@ import java.util.logging.Logger;
 
 public class HealthChecker extends Thread {
     
+    private int port;
+
+    public HealthChecker(Ports port) {
+        this.port = port.getValue();
+    }
+    
     @Override
     public void run() {
         try {
-            int port = Ports.HEALTHCHECK.getValue();
             ServerSocket server = new ServerSocket(port);
             System.out.println("Healthcheck iniciado na porta " + port);
             

@@ -15,6 +15,7 @@ public class SplitService {
         Date createdDate = fileMessage.getCreatedDate();
         String fileType = fileMessage.getFileType();
         String originPath = fileMessage.getOriginPath();
+        String owner = fileMessage.getOwner();
         
         byte[] c1 = Arrays.copyOfRange(content, 0, (fileSize + 1) / 2);
         byte[] c2 = Arrays.copyOfRange(content, (fileSize + 1) / 2, fileSize);
@@ -26,6 +27,7 @@ public class SplitService {
         f1.setFileType(fileType);
         f1.setOriginPath(originPath);
         f1.setFileSize(fileSize / 2);
+        f1.setOwner(owner);
         
         FileMessage f2 = new FileMessage();
         f2.setContent(c2);
@@ -34,6 +36,7 @@ public class SplitService {
         f2.setFileType(fileType);
         f2.setOriginPath(originPath);
         f2.setFileSize(fileSize / 2);
+        f2.setOwner(owner);
         
         ArrayList<FileMessage> files = new ArrayList<>();
         files.add(f1);
