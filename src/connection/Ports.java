@@ -6,6 +6,7 @@ public enum Ports {
     DOWNLOAD(3001),
     REMOVE(3002),
     UPLOAD(3003),
+    AUTH(3004),
     DOWNLOAD_SA_1(4002),
     DOWNLOAD_SA_2(4003),
     REMOVE_SA_1(4004),

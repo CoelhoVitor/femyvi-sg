@@ -9,9 +9,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class User {
 
-    public User() {
+    public User(UserMessage u) {
+        this.login = u.getLogin();
+        this.password = u.getPassword();
     }
 
+    public User() {
+    }
+    
     public User(String login, String password) {
         this.login = login;
         this.password = password;
