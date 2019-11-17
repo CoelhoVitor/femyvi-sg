@@ -1,19 +1,13 @@
-
 package model;
 
 import java.io.Serializable;
 
 public class UserMessage implements Serializable {
-    
+
     private String login;
-    
+
     private String password;
 
-    public UserMessage(User u) {
-        this.login = u.getLogin();
-        this.password = u.getPassword();
-    }
-    
     public String getLogin() {
         return login;
     }
@@ -34,5 +28,5 @@ public class UserMessage implements Serializable {
     public String toString() {
         return "UserMessage{" + "login=" + login + ", password=" + password + '}';
     }
-    
+
 }

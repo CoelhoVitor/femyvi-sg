@@ -1,23 +1,22 @@
-
 package model;
 
 import java.io.Serializable;
 import java.util.Date;
 
 public class FileMessage implements Serializable {
-    
+
     private String filename;
-    
+
     private String fileType;
-    
+
     private String originPath;
-    
+
     private Date createdDate;
-    
+
     private int fileSize;
-    
+
     private byte[] content;
-    
+
     private String owner;
 
     public String getFilename() {
@@ -78,7 +77,7 @@ public class FileMessage implements Serializable {
 
     @Override
     public String toString() {
-        return "FileMessage{" + "filename=" + filename + ", fileType=" + fileType + ", originPath=" + originPath + ", createdDate=" + createdDate + ", fileSize=" + fileSize + ", content=" + content + '}';
-    }    
-    
+        return "FileMessage{" + "filename=" + filename + ", fileType=" + fileType + ", originPath=" + originPath + ", createdDate=" + createdDate + ", fileSize=" + fileSize + ", content=" + content + ", owner=" + owner + '}';
+    }
+
 }
