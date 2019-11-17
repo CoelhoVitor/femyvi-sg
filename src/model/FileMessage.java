@@ -17,6 +17,8 @@ public class FileMessage implements Serializable {
     private int fileSize;
     
     private byte[] content;
+    
+    private String owner;
 
     public String getFilename() {
         return filename;
@@ -65,5 +67,18 @@ public class FileMessage implements Serializable {
     public void setContent(byte[] content) {
         this.content = content;
     }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    @Override
+    public String toString() {
+        return "FileMessage{" + "filename=" + filename + ", fileType=" + fileType + ", originPath=" + originPath + ", createdDate=" + createdDate + ", fileSize=" + fileSize + ", content=" + content + '}';
+    }    
     
 }
