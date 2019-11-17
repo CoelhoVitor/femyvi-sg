@@ -8,6 +8,7 @@ import model.User;
 public class AuthService {
     
     private final XMLService xmlService = new XMLService();
+    private final HashService hashService = new HashService();
     
     public boolean authUser(User userToAuth) throws JAXBException {
         Database db = xmlService.readDatabase();
@@ -21,12 +22,9 @@ public class AuthService {
         return false;
     }
     
-    private boolean checkUser(User userDb, User userToAuth) {
-        
-        HashService hs = new HashService();
-        
+    private boolean checkUser(User userDb, User userToAuth) {        
         return userDb.getLogin().equals(userToAuth.getLogin()) 
-                && hs.compareHash(userDb, userToAuth);
+                && hashService.compareHash(userDb, userToAuth);
     }
     
 }
