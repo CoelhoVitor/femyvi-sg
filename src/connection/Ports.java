@@ -3,7 +3,7 @@ package connection;
 public enum Ports {
     
     HEALTHCHECK(3000),
-    DOWNLOAD(3001),
+    FETCH(3001),
     REMOVE(3002),
     UPLOAD(3003),
     AUTH(3004),
