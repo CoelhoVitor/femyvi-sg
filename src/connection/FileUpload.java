@@ -1,4 +1,3 @@
-
 package connection;
 
 import java.io.IOException;
@@ -12,16 +11,16 @@ import model.FileMessage;
 import service.SplitService;
 
 public class FileUpload extends Thread {
-    
+
     private int port;
-    
+
     private final SplitService splitService = new SplitService();
-    
+
     private final FileMessageSocket fileMessageSocket = new FileMessageSocket();
 
     public FileUpload(Ports port) {
         this.port = port.getValue();
-    }    
+    }
 
     @Override
     public void run() {
@@ -30,7 +29,7 @@ public class FileUpload extends Thread {
                 // receive file from client
                 ServerSocket server = new ServerSocket(port);
                 System.out.println("File Upload iniciado na porta " + port);
-                Socket socket = server.accept();            
+                Socket socket = server.accept();
                 FileMessage fm = fileMessageSocket.receiveFileMessage(socket);
                 System.out.println(fm.toString());
 
@@ -38,8 +37,7 @@ public class FileUpload extends Thread {
                 server.close();
 
                 // send file to SA
-
-                 ArrayList<FileMessage> splittedFm = splitService.run(fm);
+                ArrayList<FileMessage> splittedFm = splitService.split(fm);
 
                 // SA 1
                 Socket socketToSA_1 = new Socket("localhost", Ports.UPLOAD_SA_1.getValue());
@@ -50,12 +48,12 @@ public class FileUpload extends Thread {
                 Socket socketToSA_2 = new Socket("localhost", Ports.UPLOAD_SA_2.getValue());
                 fileMessageSocket.sendFileMessage(socketToSA_2, splittedFm.get(1));
                 socketToSA_2.close();
-            }            
+            }
         } catch (IOException ex) {
             Logger.getLogger(FileUpload.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(FileUpload.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }    
-    
+    }
+
 }

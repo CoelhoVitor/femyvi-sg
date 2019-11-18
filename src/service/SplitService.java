@@ -1,14 +1,15 @@
-
 package service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import model.FileMessage;
 
 public class SplitService {
-    
-    public ArrayList<FileMessage> run(FileMessage fileMessage) {
+
+    public ArrayList<FileMessage> split(FileMessage fileMessage) {
         byte[] content = fileMessage.getContent();
         int fileSize = fileMessage.getFileSize();
         String filename = fileMessage.getFilename();
@@ -16,7 +17,7 @@ public class SplitService {
         String fileType = fileMessage.getFileType();
         String originPath = fileMessage.getOriginPath();
         String owner = fileMessage.getOwner();
-        
+
         byte[] c1 = Arrays.copyOfRange(content, 0, (fileSize + 1) / 2);
         byte[] c2 = Arrays.copyOfRange(content, (fileSize + 1) / 2, fileSize);
 
@@ -28,7 +29,7 @@ public class SplitService {
         f1.setOriginPath(originPath);
         f1.setFileSize(fileSize / 2);
         f1.setOwner(owner);
-        
+
         FileMessage f2 = new FileMessage();
         f2.setContent(c2);
         f2.setFilename(filename + "_2");
@@ -37,12 +38,39 @@ public class SplitService {
         f2.setOriginPath(originPath);
         f2.setFileSize(fileSize / 2);
         f2.setOwner(owner);
-        
+
         ArrayList<FileMessage> files = new ArrayList<>();
         files.add(f1);
         files.add(f2);
-        
-        return files;        
+
+        return files;
     }
-    
+
+    public FileMessage merge(FileMessage f1, FileMessage f2) throws IOException {
+        int fileSize = f1.getFileSize() + f2.getFileSize();
+        String filename = f1.getFilename();
+        Date createdDate = f1.getCreatedDate();
+        String fileType = f1.getFileType();
+        String originPath = f1.getOriginPath();
+        String owner = f1.getOwner();
+
+        byte[] c1 = f1.getContent();
+        byte[] c2 = f1.getContent();
+
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        output.write(c1);
+        output.write(c2);
+        byte[] content = output.toByteArray();
+
+        FileMessage fm = new FileMessage();
+        f2.setContent(content);
+        f2.setFilename(filename);
+        f2.setCreatedDate(createdDate);
+        f2.setFileType(fileType);
+        f2.setOriginPath(originPath);
+        f2.setFileSize(fileSize);
+        f2.setOwner(owner);
+
+        return fm;
+    }
 }

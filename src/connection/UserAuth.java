@@ -1,4 +1,3 @@
-
 package connection;
 
 import java.io.IOException;
@@ -18,13 +17,15 @@ import service.AuthService;
 public class UserAuth extends Thread {
 
     private int port;
-    
+
     private final AuthService authService = new AuthService();
+
+    private final UserMessageSocket userMessageSocket = new UserMessageSocket();
 
     public UserAuth(Ports port) {
         this.port = port.getValue();
     }
-    
+
     @Override
     public void run() {
         try {
@@ -33,16 +34,13 @@ public class UserAuth extends Thread {
                 ServerSocket server = new ServerSocket(port);
                 System.out.println("User Auth iniciado na porta " + port);
                 Socket socket = server.accept();
-                InputStream inputStream = socket.getInputStream();
-                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-
-                UserMessage um = (UserMessage) objectInputStream.readObject();
+                UserMessage um = userMessageSocket.receiveUserMessage(socket);
                 System.out.println(um.toString());
-                
+
                 // valid user
                 User userToAuth = new User(um);
                 Boolean validUser = authService.authUser(userToAuth);
-                
+
                 // send to client if user is valid
                 OutputStream outputStream = socket.getOutputStream();
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
@@ -50,7 +48,7 @@ public class UserAuth extends Thread {
 
                 socket.close();
                 server.close();
-            }            
+            }
         } catch (IOException ex) {
             Logger.getLogger(UserAuth.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -58,6 +56,6 @@ public class UserAuth extends Thread {
         } catch (JAXBException ex) {
             Logger.getLogger(UserAuth.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }    
-    
+    }
+
 }

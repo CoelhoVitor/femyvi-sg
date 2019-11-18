@@ -38,7 +38,7 @@ public class FileRemove extends Thread {
 
                 // send file to SA
 
-                ArrayList<FileMessage> splittedFm = splitService.run(fm);
+                ArrayList<FileMessage> splittedFm = splitService.split(fm);
 
                 // SA 1
                 Socket socketToSA_1 = new Socket("localhost", Ports.REMOVE_SA_1.getValue());
