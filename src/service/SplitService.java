@@ -63,13 +63,13 @@ public class SplitService {
         byte[] content = output.toByteArray();
 
         FileMessage fm = new FileMessage();
-        f2.setContent(content);
-        f2.setFilename(filename);
-        f2.setCreatedDate(createdDate);
-        f2.setFileType(fileType);
-        f2.setOriginPath(originPath);
-        f2.setFileSize(fileSize);
-        f2.setOwner(owner);
+        fm.setContent(content);
+        fm.setFilename(filename);
+        fm.setCreatedDate(createdDate);
+        fm.setFileType(fileType);
+        fm.setOriginPath(originPath);
+        fm.setFileSize(fileSize);
+        fm.setOwner(owner);
 
         return fm;
     }
