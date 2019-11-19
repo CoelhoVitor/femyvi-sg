@@ -34,33 +34,35 @@ public class FileFetch extends Thread {
                 Socket socket = server.accept();
                 UserMessage um = userMessageSocket.receiveUserMessage(socket);
                 System.out.println(um.toString());
+                socket.close();
 
                 // send user to SA and get file parts
+                ArrayList<FileMessage> mergedFiles = new ArrayList<>();
+
                 // SA 1
-                Socket socketToSA_1 = new Socket("localhost", Ports.UPLOAD_SA_1.getValue());
+                Socket socketToSA_1 = new Socket("localhost", Ports.FETCH_SA_1.getValue());
                 userMessageSocket.sendUserMessage(socketToSA_1, um);
                 ArrayList<FileMessage> fileMessages_1 = fileMessageSocket.receiveFileMessageList(socketToSA_1);
                 socketToSA_1.close();
 
-                // SA 2
-                Socket socketToSA_2 = new Socket("localhost", Ports.UPLOAD_SA_2.getValue());
-                userMessageSocket.sendUserMessage(socketToSA_2, um);
-                ArrayList<FileMessage> fileMessages_2 = fileMessageSocket.receiveFileMessageList(socketToSA_2);
-                socketToSA_2.close();
+                if (!fileMessages_1.isEmpty()) {
+                    // SA 2
+                    Socket socketToSA_2 = new Socket("localhost", Ports.FETCH_SA_2.getValue());
+                    userMessageSocket.sendUserMessage(socketToSA_2, um);
+                    ArrayList<FileMessage> fileMessages_2 = fileMessageSocket.receiveFileMessageList(socketToSA_2);
+                    socketToSA_2.close();
 
-                // Merge files
-                ArrayList<FileMessage> mergedFiles = new ArrayList<>();
-
-                for (int i = 0; i < fileMessages_1.size(); i++) {
-                    FileMessage f1 = fileMessages_1.get(i);
-                    FileMessage f2 = fileMessages_2.get(i);
-                    FileMessage fm = splitService.merge(f1, f2);
-                    mergedFiles.add(fm);
+                    for (int i = 0; i < fileMessages_1.size(); i++) {
+                        FileMessage f1 = fileMessages_1.get(i);
+                        FileMessage f2 = fileMessages_2.get(i);
+                        FileMessage fm = splitService.merge(f1, f2);
+                        mergedFiles.add(fm);
+                    }
                 }
 
+                socket = server.accept();
                 fileMessageSocket.sendFileMessageList(socket, mergedFiles);
 
-                socket.close();
                 server.close();
             }
         } catch (IOException ex) {
