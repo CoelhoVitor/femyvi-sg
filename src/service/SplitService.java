@@ -55,7 +55,7 @@ public class SplitService {
         String owner = f1.getOwner();
 
         byte[] c1 = f1.getContent();
-        byte[] c2 = f1.getContent();
+        byte[] c2 = f2.getContent();
 
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         output.write(c1);
