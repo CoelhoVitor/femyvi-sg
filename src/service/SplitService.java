@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import model.FileMessage;
+import util.FileUtils;
 
 public class SplitService {
 
@@ -48,10 +49,10 @@ public class SplitService {
 
     public FileMessage merge(FileMessage f1, FileMessage f2) throws IOException {
         int fileSize = f1.getFileSize() + f2.getFileSize();
-        String filename = f1.getFilename();
+        String filename = FileUtils.getFilenameWithoutServerNum(f1.getFilename());
         Date createdDate = f1.getCreatedDate();
         String fileType = f1.getFileType();
-        String originPath = f1.getOriginPath();
+        String originPath = FileUtils.getOriginPathWithoutServerNum(f1.getOriginPath(), fileType);
         String owner = f1.getOwner();
 
         byte[] c1 = f1.getContent();
