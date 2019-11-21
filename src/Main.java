@@ -2,6 +2,7 @@
 import connection.FileFetch;
 import connection.FileRemove;
 import connection.FileUpload;
+import connection.HealthChecker;
 import connection.Ports;
 import connection.UserAuth;
 
@@ -12,6 +13,10 @@ public class Main {
         FileRemove fr = new FileRemove(Ports.REMOVE);
         FileFetch ff = new FileFetch(Ports.FETCH);
         UserAuth ua = new UserAuth(Ports.AUTH);
+        HealthChecker hc = new HealthChecker(Ports.HEALTHCHECK);
+        
+        // Start Health Checker Thread on Port 3000
+        hc.start();
 
         // Start File Upload Thread on Port 3003
         fup.start();
