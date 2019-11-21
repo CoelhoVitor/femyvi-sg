@@ -33,13 +33,14 @@ public class UserAuth extends Thread {
 
     @Override
     public void run() {
-        try {
-            Security.addProvider(new Provider());
-            System.setProperty("javax.net.ssl.keyStore", "sgkeystore.ks");
-            System.setProperty("javax.net.ssl.keyStorePassword", "femyvi-sg");
-            SSLServerSocketFactory sslServerSocketfactory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
 
-            while (true) {
+        Security.addProvider(new Provider());
+        System.setProperty("javax.net.ssl.keyStore", "sgkeystore.ks");
+        System.setProperty("javax.net.ssl.keyStorePassword", "femyvi-sg");
+        SSLServerSocketFactory sslServerSocketfactory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
+
+        while (true) {
+            try {
                 // receive user from client
                 SSLServerSocket server = (SSLServerSocket) sslServerSocketfactory.createServerSocket(port);
                 System.out.println("User Auth iniciado na porta " + port);
@@ -58,14 +59,15 @@ public class UserAuth extends Thread {
 
                 socket.close();
                 server.close();
+            } catch (IOException ex) {
+                Logger.getLogger(UserAuth.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(UserAuth.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (JAXBException ex) {
+                Logger.getLogger(UserAuth.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (IOException ex) {
-            Logger.getLogger(UserAuth.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UserAuth.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JAXBException ex) {
-            Logger.getLogger(UserAuth.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
 }

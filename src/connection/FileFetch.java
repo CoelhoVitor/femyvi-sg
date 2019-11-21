@@ -32,15 +32,16 @@ public class FileFetch extends Thread {
 
     @Override
     public void run() {
-        try {
-            Security.addProvider(new Provider());
 
-            System.setProperty("javax.net.ssl.keyStore", "sgkeystore.ks");
-            System.setProperty("javax.net.ssl.keyStorePassword", "femyvi-sg");
-            System.setProperty("javax.net.ssl.trustStore", "sgkeystore.ks");
-            SSLServerSocketFactory sslServerSocketfactory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
-            SSLSocketFactory sslSocketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
-            while (true) {
+        Security.addProvider(new Provider());
+
+        System.setProperty("javax.net.ssl.keyStore", "sgkeystore.ks");
+        System.setProperty("javax.net.ssl.keyStorePassword", "femyvi-sg");
+        System.setProperty("javax.net.ssl.trustStore", "sgkeystore.ks");
+        SSLServerSocketFactory sslServerSocketfactory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
+        SSLSocketFactory sslSocketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+        while (true) {
+            try {
                 // receive file from client
 
                 SSLServerSocket server = (SSLServerSocket) sslServerSocketfactory.createServerSocket(port);
@@ -56,7 +57,7 @@ public class FileFetch extends Thread {
                 // SA 1
                 SSLSocket socketToSA_1 = (SSLSocket) sslSocketFactory.createSocket("localhost", Ports.FETCH_SA_1.getValue());
                 socketToSA_1.startHandshake();
-                
+
                 userMessageSocket.sendUserMessage(socketToSA_1, um);
                 ArrayList<FileMessage> fileMessages_1 = fileMessageSocket.receiveFileMessageList(socketToSA_1);
                 socketToSA_1.close();
@@ -81,12 +82,13 @@ public class FileFetch extends Thread {
                 fileMessageSocket.sendFileMessageList(socket, mergedFiles);
 
                 server.close();
+            } catch (IOException ex) {
+                Logger.getLogger(FileUpload.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(FileUpload.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (IOException ex) {
-            Logger.getLogger(FileUpload.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FileUpload.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
 }
