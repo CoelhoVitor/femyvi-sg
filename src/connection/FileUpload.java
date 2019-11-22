@@ -2,9 +2,6 @@ package connection;
 
 import com.sun.net.ssl.internal.ssl.Provider;
 import java.io.IOException;
-import java.net.ConnectException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.security.Security;
 import java.util.ArrayList;
 import java.util.logging.Level;
